@@ -2,16 +2,14 @@ package com.project.orderAPI.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.orderAPI.entities.enums.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -28,6 +26,12 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private User client;
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items= new HashSet<>();
+
+    public Order(){
+        
+    }
 
     public Order(Long id,Instant moment,OrderStatus orderStatus,User client){
         super();
@@ -45,5 +49,49 @@ public class Order implements Serializable {
         if(orderStatus!= null) {
             this.orderStatus = orderStatus.getCode();
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+    public void setMoment(Instant moment) {
+        this.moment = moment;
+    }
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public User getClient() {
+        return client;
+    }
+
+    public void setClient(User client) {
+        this.client = client;
+    }
+    public Set<OrderItem> getItems(){
+        return items;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
