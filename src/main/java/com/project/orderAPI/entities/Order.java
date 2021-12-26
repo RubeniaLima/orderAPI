@@ -99,6 +99,7 @@ public class Order implements Serializable {
             sum  += x.getSubTotal();
         }
         return sum;
+
     }
     @Override
     public boolean equals(Object o) {
