@@ -2,6 +2,7 @@ package com.project.orderAPI.services;
 
 import com.project.orderAPI.entities.User;
 import com.project.orderAPI.repositories.UserRepository;
+import com.project.orderAPI.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserService {
 
     public User findById(Long id){
         Optional<User> obj = userRepository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(()-> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj){
